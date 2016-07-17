@@ -1,23 +1,50 @@
 <template>
   <app-header></app-header>
   <div id="content" class="row">
-    <!-- // put your article-component here -->
-    <h1>Ready for your article component</h1>
+    <app-articles-list
+      :articles="articles"></app-articles-list>
   </div>
   <app-footer></app-footer>
 </template>
 
 <script>
-  var layout = require('page~global'),
-      header = require('component~header'),
-      footer = require('component~footer');
+  const layout = require('page~global')
+  const header = require('component~header')
+  const footer = require('component~footer')
+  const articlesList = require('component~articles-list')
+
+  const articlesURL = 'src/data/articles.json'
 
   module.exports = {
     el: '#app',
+
     components: {
       'app-header': header,
-      'app-footer': footer
+      'app-footer': footer,
+      'app-articles-list': articlesList
     },
-    replace: false
-  };
+
+    replace: false,
+
+    created: function () {
+      this.fetchData()
+    },
+
+    data: {
+      articles: []
+    },
+
+    methods: {
+      fetchData: function () {
+        // adapted from https://jsfiddle.net/yyx990803/vaj48u3h/
+        const xhr = new XMLHttpRequest()
+        xhr.open('GET', articlesURL)
+        xhr.onload = () => {
+          const data = JSON.parse(xhr.responseText)
+          this.articles = data.articles
+        }
+        xhr.send()
+      }
+    }
+  }
 </script>
