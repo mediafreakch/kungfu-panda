@@ -1,8 +1,10 @@
 <template>
   <app-header></app-header>
   <div id="content" class="row">
+    <app-search-bar :search-query.sync="searchQuery"></app-search-bar>
     <app-articles-list
-      :articles="articles"></app-articles-list>
+      :articles="articles"
+      :filter-query="searchQuery"></app-articles-list>
   </div>
   <app-footer></app-footer>
 </template>
@@ -12,6 +14,7 @@
   const header = require('component~header')
   const footer = require('component~footer')
   const articlesList = require('component~articles-list')
+  const searchBar = require('component~search-bar')
 
   const articlesURL = 'src/data/articles.json'
 
@@ -21,7 +24,8 @@
     components: {
       'app-header': header,
       'app-footer': footer,
-      'app-articles-list': articlesList
+      'app-articles-list': articlesList,
+      'app-search-bar': searchBar
     },
 
     replace: false,
@@ -31,7 +35,8 @@
     },
 
     data: {
-      articles: []
+      articles: [],
+      searchQuery: ''
     },
 
     methods: {
